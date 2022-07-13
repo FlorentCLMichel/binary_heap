@@ -1,4 +1,4 @@
-/// A binary heap structure
+/// A binary max-heap structure
 ///
 /// We use an array representation for the heap, implemented as a `Vec`.
 ///
@@ -41,6 +41,44 @@ impl<T: std::cmp::PartialOrd> BinaryHeap<T> {
     #[inline]
     pub fn size(&self) -> usize {
         self.data.len()
+    }
+
+    /// Insert an element in the heap
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use binary_heap::BinaryHeap;
+    ///
+    /// let mut heap = BinaryHeap::<isize>::new();
+    /// heap.insert(0);
+    ///
+    /// assert_eq!(1, heap.size());
+    /// ```
+    pub fn insert(&mut self, x: T) {
+
+        // push `x` in the data array
+        self.data.push(x);
+
+        // ‘bubble up’ the new element to its correct position
+        let mut current_pos: usize = self.data.len();
+        let mut parent_pos: usize = current_pos >> 1;
+        while current_pos > 1 // stop if the element is at the root of the heap
+        {
+            
+            // if the new element is larger than that of the parent node, swap them
+            // else, the element is already at the right position and we can stop
+            if self.data[parent_pos-1] < self.data[current_pos-1] {
+                self.data.swap(parent_pos-1, current_pos-1);
+                
+                // update the current position and parent position
+                current_pos = parent_pos;
+                parent_pos >>= 1;
+
+            } else {
+                break;
+            }
+        }
     }
 }
 
