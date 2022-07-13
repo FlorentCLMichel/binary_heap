@@ -87,3 +87,29 @@ impl<T: std::cmp::PartialOrd> std::default::Default for BinaryHeap<T> {
         Self::new()
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn several_inserts_1() {
+        let mut heap = BinaryHeap::<isize>::new();
+        assert!(heap.data.is_empty());
+        heap.insert(0);
+        assert_eq!(vec![0], heap.data);
+        heap.insert(1);
+        assert_eq!(vec![1, 0], heap.data);
+        heap.insert(2);
+        assert_eq!(vec![2, 0, 1], heap.data);
+        heap.insert(-2);
+        assert_eq!(vec![2, 0, 1, -2], heap.data);
+        heap.insert(-1);
+        assert_eq!(vec![2, 0, 1, -2, -1], heap.data);
+        heap.insert(2);
+        assert_eq!(vec![2, 0, 2, -2, -1, 1], heap.data);
+        heap.insert(0);
+        assert_eq!(vec![2, 0, 2, -2, -1, 1, 0], heap.data);
+    }
+}
