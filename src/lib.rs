@@ -151,6 +151,38 @@ impl<T: std::cmp::PartialOrd> BinaryHeap<T> {
         // return the last element
         self.data.pop()
     }
+
+    /// consume the heap and return a vectror fo all its elements
+    /// # Example
+    ///
+    /// ```
+    /// use binary_heap::BinaryHeap;
+    /// 
+    /// // build the heap
+    /// let mut heap = BinaryHeap::<isize>::new();
+    /// heap.insert(0);
+    /// heap.insert(3);
+    /// heap.insert(1);
+    /// heap.insert(2);
+    /// heap.insert(-1);
+    ///
+    /// // convert it to a vector
+    /// let vec = heap.to_vec();
+    ///
+    /// assert_eq!(vec![3, 2, 1, 0, -1], vec);
+    /// ```
+    #[inline]
+    pub fn to_vec(self) -> Vec<T> {
+        // // explicit version
+        // let mut res = Vec::<T>::with_capacity(self.size());
+        // while let Some(x) = self.pop() {
+        //     res.push(x);
+        // }
+        // res
+        
+        // version using the implementation of the `Iterator` trait
+        self.collect()
+    }
 }
 
 impl<T: std::cmp::PartialOrd + Clone> BinaryHeap<T> {
@@ -231,6 +263,13 @@ impl<T: std::cmp::PartialOrd + std::cmp::PartialEq> BinaryHeap<T> {
 impl<T: std::cmp::PartialOrd> std::default::Default for BinaryHeap<T> {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl<T: std::cmp::PartialOrd> Iterator for BinaryHeap<T> {
+    type Item = T;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.pop()
     }
 }
 
