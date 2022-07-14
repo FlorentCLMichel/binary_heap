@@ -28,7 +28,7 @@ impl<T: std::cmp::PartialOrd> BinaryHeap<T> {
 
     /// Get the size of the heap (number of elements)
     ///
-    /// Worst-case complexity: $O(1)$.
+    /// Worst-case complexity: $\Theta(1)$.
     ///
     /// # Example 
     ///
@@ -47,7 +47,7 @@ impl<T: std::cmp::PartialOrd> BinaryHeap<T> {
 
     /// Insert an element in the heap
     ///
-    /// Worst-case complexity: $O(\log n)$, where $n$ is the number of elements in the heap.
+    /// Worst-case complexity: $\Theta(\log n)$, where $n$ is the number of elements in the heap.
     ///
     /// # Example
     ///
@@ -85,9 +85,9 @@ impl<T: std::cmp::PartialOrd> BinaryHeap<T> {
         }
     }
 
-    /// remove and return the maximum (or `None` if the heap is empty)
+    /// remove and return the root element (or `None` if the heap is empty)
     ///
-    /// Worst-case complexity: $O(\log n)$, where $n$ is the number of elements in the heap.
+    /// Worst-case complexity: $\Theta(\log n)$, where $n$ is the number of elements in the heap.
     ///
     /// # Return value
     ///
@@ -189,7 +189,7 @@ impl<T: std::cmp::PartialOrd + Clone> BinaryHeap<T> {
 
     /// return a copy of the maximum element if the heap is not empty
     ///
-    /// Worst-case complexity: $O(1)$.
+    /// Worst-case complexity: $\Theta(1)$.
     ///
     /// # Example
     ///
@@ -215,7 +215,7 @@ impl<T: std::cmp::PartialOrd + std::cmp::PartialEq> BinaryHeap<T> {
     /// Search an element `x` in the heap, returning `true` if it is present and `false` if it is
     /// not.
     ///
-    /// Worst-case complexity: $O(n)$, where $n$ is the number of elements in the heap.
+    /// Worst-case complexity: $\Theta(n)$, where $n$ is the number of elements in the heap.
     ///
     /// # Example
     /// ```
