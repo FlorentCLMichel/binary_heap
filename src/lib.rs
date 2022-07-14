@@ -178,6 +178,56 @@ impl<T: std::cmp::PartialOrd + Clone> BinaryHeap<T> {
     }
 }
 
+impl<T: std::cmp::PartialOrd + std::cmp::PartialEq> BinaryHeap<T> {
+
+    /// Search an element `x` in the heap, returning `true` if it is present and `false` if it is
+    /// not.
+    ///
+    /// Worst-case complexity: $O(n)$, where $n$ is the number of elements in the heap.
+    ///
+    /// # Example
+    /// ```
+    /// use binary_heap::BinaryHeap;
+    ///
+    /// let mut heap = BinaryHeap::<isize>::new();
+    /// heap.insert(0);
+    ///
+    /// assert!(heap.search(&0));
+    /// assert!(!heap.search(&1));
+    /// ```
+    pub fn search(&self, x: &T) -> bool {
+
+        // queue storing the indices of elements to process
+        let mut index_queue = std::collections::VecDeque::<usize>::new();
+
+        // add the root to the queue
+        index_queue.push_front(0);
+
+        let size = self.size();
+
+        // process the whole queue
+        while let Some(current_index) = index_queue.pop_back() {
+
+            // If the index is not smaller than `size`, we hav ereached the end of the heap.
+            // If `x` is larger than the elementwith the current index, we know `x` can't be in 
+            // the sub-heap.
+            if (current_index < size) && !(*x > self.data[current_index]) {
+
+                // check if the current element is equal to `x`; if yes, return `true`
+                if *x == self.data[current_index] {
+                    return true;
+                }
+
+                // push the indices of the two children to the queue
+                index_queue.push_front((current_index << 1) + 1);
+                index_queue.push_front((current_index << 1) + 2);
+            }
+        }
+
+        false
+    }
+}
+
 impl<T: std::cmp::PartialOrd> std::default::Default for BinaryHeap<T> {
     fn default() -> Self {
         Self::new()
@@ -279,5 +329,58 @@ mod tests {
         assert_eq!(Some(-15), heap.pop());
         assert_eq!(Some(-20), heap.pop());
         assert_eq!(None, heap.pop());
+    }
+    
+    #[test]
+    fn search_1() {
+        let mut heap = BinaryHeap::<isize>::new();
+        heap.insert(0);
+        heap.insert(1);
+        heap.insert(2);
+        heap.insert(-2);
+        heap.insert(-1);
+        heap.insert(2);
+        heap.insert(0);
+        assert!(heap.search(&0));
+        assert!(heap.search(&1));
+        assert!(heap.search(&2));
+        assert!(heap.search(&-1));
+        assert!(heap.search(&-2));
+        assert!(!heap.search(&-3));
+        assert!(!heap.search(&3));
+    }
+    
+    #[test]
+    fn search_2() {
+        let mut heap = BinaryHeap::<isize>::new();
+        heap.insert(0);
+        heap.insert(10);
+        heap.insert(20);
+        heap.insert(-20);
+        heap.insert(-10);
+        heap.insert(20);
+        heap.insert(0);
+        heap.insert(5);
+        heap.insert(15);
+        heap.insert(2);
+        heap.insert(3);
+        heap.insert(-3);
+        heap.insert(-15);
+        assert!(heap.search(&0));
+        assert!(heap.search(&10));
+        assert!(heap.search(&20));
+        assert!(heap.search(&-20));
+        assert!(heap.search(&-10));
+        assert!(heap.search(&5));
+        assert!(heap.search(&15));
+        assert!(heap.search(&2));
+        assert!(heap.search(&3));
+        assert!(heap.search(&-3));
+        assert!(heap.search(&-15));
+        assert!(!heap.search(&1));
+        assert!(!heap.search(&-1));
+        assert!(!heap.search(&100));
+        assert!(!heap.search(&-100));
+        assert!(!heap.search(&14));
     }
 }
