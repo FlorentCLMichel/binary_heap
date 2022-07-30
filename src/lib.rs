@@ -152,7 +152,7 @@ impl<T: std::cmp::PartialOrd> BinaryHeap<T> {
         self.data.pop()
     }
 
-    /// consume the heap and return a vectror fo all its elements
+    /// consume the heap and return a vector fo all its elements
     /// # Example
     ///
     /// ```
@@ -207,6 +207,45 @@ impl<T: std::cmp::PartialOrd + Clone> BinaryHeap<T> {
         } else {
             Some(self.data[0].clone())
         }
+    }
+    
+    /// Build a `BinaryHeap` from a slice
+    /// 
+    /// # Example 
+    ///
+    /// ```
+    /// use binary_heap::BinaryHeap;
+    ///
+    /// let values: Vec<isize> = vec![0, 1, 2, 3];
+    ///
+    /// let mut heap = BinaryHeap::from_vec(&values);
+    ///
+    /// assert_eq!(4, heap.size());
+    /// ```
+    pub fn from_vec(values: &[T]) -> Self {
+        let mut heap = BinaryHeap::new();
+        for x in values.iter() {
+            heap.insert((*x).clone());
+        }
+        heap
+    }
+
+    /// Sort an array in decreasing order by building then consuming a heap.
+    ///
+    /// # Example
+    /// 
+    /// ```
+    /// use binary_heap::BinaryHeap;
+    ///
+    /// let values: Vec<isize> = vec![-1, -2, -3, 0, 3, 2, 1];
+    ///
+    /// let sorted_values = BinaryHeap::sort(&values);
+    ///
+    /// assert_eq!(vec![3, 2, 1, 0, -1, -2, -3], sorted_values);
+    /// ```
+    pub fn sort(values: &[T]) -> Vec<T> {
+        let heap = BinaryHeap::from_vec(&values);
+        heap.to_vec()
     }
 }
 
@@ -421,5 +460,12 @@ mod tests {
         assert!(!heap.search(&100));
         assert!(!heap.search(&-100));
         assert!(!heap.search(&14));
+    }
+
+    #[test]
+    fn sort_1() {
+        let values: Vec<isize> = vec![0, 2, -2, 4, 6, 8, -1, 1, 3, 5, 7];
+        let values_sorted = BinaryHeap::sort(&values);
+        assert_eq!(vec![8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2], values_sorted);
     }
 }
