@@ -26,10 +26,12 @@ fn main() {
 
     // List of tasks with level of priority (higher ↔ more urgent)
     let tasks = vec![
-        KeyValuePair::new(4, "Clean the kitchen table"),
+        KeyValuePair::new(4, "Clean the car"),
         KeyValuePair::new(2, "Read ‘The Lord of the Rings’"),
         KeyValuePair::new(8, "Proofread the new draft for the paper"),
         KeyValuePair::new(6, "Update documentation in the Git repository"),
+        KeyValuePair::new(2, "Read ‘The Silmarillion’"),
+        KeyValuePair::new(7, "Update algorithm 2.3"),
     ];
     
     // Sort them using a binary heap
@@ -37,6 +39,6 @@ fn main() {
 
     // Print the result
     for KeyValuePair { key: k, value: v } in tasks_sorted.iter() {
-        println!("Task: {}, priority level: {}", v, k);
+        println!("Task: {}, Priority level: {}", v, k);
     }
 }
